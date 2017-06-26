@@ -1,29 +1,36 @@
-import { } from 'vsts-task-lib';
-import * as path from 'path';
+import { join } from 'path';
+import {
+    getVariable,
+    setResourcePath,
+    getInput,
+    loc,
+    getEndpointAuthorizationParameter,
+    getEndpointUrl
+} from 'vsts-task-lib';
 import { WebApi, getHandlerFromToken } from 'vso-node-api/WebApi';
-import * as tl from 'vsts-task-lib/task';
 
-async function main(): Promise<void> {
+import reportCodeCoverage from './reportCodeCoverage';
+
+async function main() {
     // set resource file
-    tl.setResourcePath(path.join(__dirname, 'task.json'));
+    setResourcePath(join(__dirname, 'task.json'));
 
     // get input data
-    let buildId = parseInt(tl.getInput("buildId"));
+    const buildId = parseInt(getInput("buildId"));
     if (isNaN(buildId)) {
-        throw new Error(tl.loc("InvalidBuildId", tl.getInput("buildId")));
+        throw new Error(loc("InvalidBuildId", getInput("buildId")));
     }
 
-    let accessToken = tl.getEndpointAuthorizationParameter('SYSTEMVSSCONNECTION', 'AccessToken', false);
-    let credentialHandler = getHandlerFromToken(accessToken);
-    let collectionUrl = tl.getEndpointUrl('SYSTEMVSSCONNECTION', false);
-    let vssConnection = new WebApi(collectionUrl, credentialHandler);
+    // get connection data
+    const accessToken = getEndpointAuthorizationParameter('SYSTEMVSSCONNECTION', 'AccessToken', false);
+    const credentialHandler = getHandlerFromToken(accessToken);
+    const collectionUrl = getEndpointUrl('SYSTEMVSSCONNECTION', false);
+    const vssConnection = new WebApi(collectionUrl, credentialHandler);
 
-    const projectId = tl.getVariable("System.TeamProjectId");
+    // get project id
+    const projectId = getVariable("System.TeamProjectId");
 
-    const testApi = vssConnection.getTestApi();
-    const codeCoverage = await testApi.getCodeCoverageSummary(projectId, buildId);
-    
-    //codeCoverage.coverageData[0].coverageStats[0].
+    await reportCodeCoverage(vssConnection, buildId, projectId);
 }
 
 main();
