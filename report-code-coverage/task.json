@@ -1,0 +1,41 @@
+{
+    "id": "46A13823-5BC6-4705-95ED-4C45514B67B7",
+    "name": "ReportPullRequestCodeCoverage",
+    "friendlyName": "Report Pull Request Code Coverage",
+    "description": "The task reports to the originating pull request information of code coverage changes.",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Igor Oleinikov",
+    "preview": true,
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Echo $(samplestring)",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": false
+        }
+    ],
+    "inputs": [
+        {
+            "name": "buildId",
+            "type": "pickList",
+            "label": "Build",
+            "required": false,
+            "helpMarkDown": "The build from which get code coverage data.",
+            "defaultValue": "$(Build.BuildId)",
+            "options": {
+                "$(Build.BuildId)": "The current build"
+            }
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

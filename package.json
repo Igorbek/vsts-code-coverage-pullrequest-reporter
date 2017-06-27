@@ -1,6 +1,6 @@
 {
   "name": "vsts-code-coverage-pullrequest-reporter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Visual Studio Team Services task that reports code coverage to pull request.",
   "main": "index.js",
   "author": "Igor Oleinikov",

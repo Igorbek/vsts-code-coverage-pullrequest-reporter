@@ -18,7 +18,7 @@ async function main() {
     // get input data
     const buildId = parseInt(getInput("buildId"));
     if (isNaN(buildId)) {
-        throw new Error(loc("InvalidBuildId", getInput("buildId")));
+        throw new Error(`Invalid buildId ${getInput("buildId")}`);
     }
 
     // get connection data

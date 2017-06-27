@@ -24,20 +24,21 @@ export default async function reportCodeCoverage(
     const testApi = vssConnection.getTestApi();
     const codeCoverage = await testApi.getCodeCoverageSummary(projectId, buildId);
 
-    console.log('Source code coverage:');
-    codeCoverage.coverageData.forEach(d => console.log(d));
+    if (!codeCoverage || !codeCoverage.coverageData || !codeCoverage.coverageData.length) {
+        console.log(`No code coverage data for build #${buildId}.`)
+    }
 
     const buildApi = vssConnection.getBuildApi();
     const build = await buildApi.getBuild(buildId);
 
     if (build.reason !== BuildReason.PullRequest) {
-        // message
+        console.log(`The reason of build #${buildId} is not pull request.`);
         return;
     }
 
     const pullRequestId = getPullRequestIdFromBranchName(build.sourceBranch);
     if (!pullRequestId) {
-        // message
+        console.log(`Unable to determine pull request id from branch name '${build.sourceBranch}'.`);
         return;
     }
 
@@ -45,7 +46,7 @@ export default async function reportCodeCoverage(
     const pullRequest = await codeApi.getPullRequestById(pullRequestId);
 
     if (!pullRequest) {
-        console.log(`Pull request #${pullRequestId} has not been found`);
+        console.log(`Pull request #${pullRequestId} does not exist.`);
         return;
     }
 
@@ -73,20 +74,17 @@ export default async function reportCodeCoverage(
     );
 
     if (!builds || builds.length < 1) {
-        // todo message
+        console.log(`No builds found for target branch '${pullRequest.targetRefName}'.`);
         return;
     }
 
     const lastMergeTargetBuild = builds.find(b => b.sourceVersion === lastMergeTargetCommitId);
     if (!lastMergeTargetBuild) {
-        // todo message
+        console.log(`Build of merge target commit does not exist.`);
         return;
     }
 
     const targetCodeCoverage = await testApi.getCodeCoverageSummary(projectId, lastMergeTargetBuild.id);
-
-    console.log('Target code coverage:');
-    targetCodeCoverage.coverageData.forEach(d => console.log(d));
 
     const groupedCoverage: CodeCoverageComparisonEntries = {};
     targetCodeCoverage.coverageData[0].coverageStats.forEach(targetData => {
@@ -101,7 +99,6 @@ export default async function reportCodeCoverage(
     });
 
     console.log(groupedCoverage);
-
 }
 
 function getPullRequestIdFromBranchName(branchName: string): number | undefined {
