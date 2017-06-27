@@ -9,3 +9,4 @@
 # Examples
 
 * https://github.com/Microsoft/vsts-tasks
+* https://github.com/cschleiden/vsts-extension-ts-seed-simple/
