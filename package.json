@@ -1,6 +1,6 @@
 {
   "name": "vsts-code-coverage-pullrequest-reporter",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Visual Studio Team Services task that reports code coverage to pull request.",
   "main": "index.js",
   "author": "Igor Oleinikov",
@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/jest": "^20.0.2",
     "@types/node": "^8.0.2",
+    "@types/q": "^1.0.1",
     "jest": "^20.0.4",
     "ts-jest": "^20.0.6",
     "typescript": "2.4"
