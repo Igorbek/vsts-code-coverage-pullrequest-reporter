@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "pull-request-tools",
     "name": "Pull Request Quality Check Tools",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "publisher": "igorbek",
     "targets": [
         {

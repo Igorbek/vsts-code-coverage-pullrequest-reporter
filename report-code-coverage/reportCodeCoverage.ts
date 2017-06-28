@@ -1,6 +1,6 @@
 import { WebApi } from "vso-node-api/WebApi";
 import { BuildReason } from "vso-node-api/interfaces/BuildInterfaces";
-import { CommentThreadStatus, CommentType } from "vso-node-api/interfaces/GitInterfaces";
+import { CommentThreadStatus, CommentType, Comment, GitPullRequestCommentThread } from "vso-node-api/interfaces/GitInterfaces";
 import { CodeCoverageStatistics } from "vso-node-api/interfaces/TestInterfaces";
 import { formatMarkdownReport } from './messageFormatter';
 
@@ -101,28 +101,25 @@ export default async function reportCodeCoverage(
     let pullRequestThread = pullRequestThreads.find(prThread => prThread.properties && prThread.properties.codeCoverageReport);
     if (pullRequestThread && pullRequestThread.comments.length) {
         const comment = pullRequestThread.comments[0];
-        console.log(`codeApi.updateComment({},
-            pullRequest.repository.id=${pullRequest.repository.id},
-            pullRequestId=${pullRequestId},
-            pullRequestThread.id=${pullRequestThread.id},
-            comment.id=${comment.id})`);
         await codeApi.updateComment({
                 commentType: CommentType.Text,
                 content: message
-            } as any,
+            } as Partial<Comment> as Comment,
             pullRequest.repository.id,
             pullRequestId,
             pullRequestThread.id,
             comment.id);
     } else {
         await codeApi.createThread({
-            comments: [{
-                commentType: CommentType.Text,
-                content: message
-            }],
-            properties: { codeCoverageReport: true },
-            status: CommentThreadStatus.Active,
-        } as any, pullRequest.repository.id, pullRequestId);
+                comments: [{
+                    commentType: CommentType.Text,
+                    content: message
+                }],
+                properties: { codeCoverageReport: true },
+                status: CommentThreadStatus.Active,
+            } as Partial<GitPullRequestCommentThread> as GitPullRequestCommentThread,
+            pullRequest.repository.id,
+            pullRequestId);
     }
 }
 
