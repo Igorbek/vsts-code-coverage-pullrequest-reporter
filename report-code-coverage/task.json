@@ -10,9 +10,9 @@
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 0
+        "Patch": 7
     },
-    "instanceNameFormat": "Echo $(samplestring)",
+    "instanceNameFormat": "Report Pull Request Code Coverage",
     "groups": [
         {
             "name": "advanced",
