@@ -1,6 +1,8 @@
 import { WebApi } from "vso-node-api/WebApi";
 import { BuildReason } from "vso-node-api/interfaces/BuildInterfaces";
+import { CommentThreadStatus, CommentType } from "vso-node-api/interfaces/GitInterfaces";
 import { CodeCoverageStatistics } from "vso-node-api/interfaces/TestInterfaces";
+import { formatMarkdownReport } from './messageFormatter';
 
 interface CodeCoverageStat {
     total: number;
@@ -86,54 +88,45 @@ export default async function reportCodeCoverage(
 
     const targetCodeCoverage = await testApi.getCodeCoverageSummary(projectId, lastMergeTargetBuild.id);
 
-    const groupedCoverage: CodeCoverageComparisonEntries = {};
-    targetCodeCoverage.coverageData[0].coverageStats.forEach(targetData => {
-        const sourceData = codeCoverage.coverageData[0].coverageStats.find(sc => sc.label === targetData.label);
-        if (sourceData) {
-            groupedCoverage[sourceData.label] = {
-                target: { total: targetData.total, covered: targetData.covered },
-                source: { total: sourceData.total, covered: sourceData.covered }
-            };
-            console.log(`${sourceData.label}: ${createStatReportMarkdown(groupedCoverage[sourceData.label])}`)
-        }
-    });
+    if (!targetCodeCoverage || !targetCodeCoverage.coverageData || !targetCodeCoverage.coverageData.length) {
+        console.log(`No code coverage for target branch '${pullRequest.targetRefName}'.`);
+        return;
+    }
 
-    console.log(groupedCoverage);
+    const message = `### Code Coverage Report\n${formatMarkdownReport(
+        { label: 'Target', stat: targetCodeCoverage.coverageData[0] },
+        { label: 'PR', stat: codeCoverage.coverageData[0] })}`;
+
+    const pullRequestThreads = await codeApi.getThreads(pullRequest.repository.id, pullRequestId);
+    let pullRequestThread = pullRequestThreads.find(prThread => prThread.properties && prThread.properties.codeCoverageReport);
+    if (pullRequestThread && pullRequestThread.comments.length) {
+        const comment = pullRequestThread.comments[0];
+        console.log(`codeApi.updateComment({},
+            pullRequest.repository.id=${pullRequest.repository.id},
+            pullRequestId=${pullRequestId},
+            pullRequestThread.id=${pullRequestThread.id},
+            comment.id=${comment.id})`);
+        await codeApi.updateComment({
+                commentType: CommentType.Text,
+                content: message
+            } as any,
+            pullRequest.repository.id,
+            pullRequestId,
+            pullRequestThread.id,
+            comment.id);
+    } else {
+        await codeApi.createThread({
+            comments: [{
+                commentType: CommentType.Text,
+                content: message
+            }],
+            properties: { codeCoverageReport: true },
+            status: CommentThreadStatus.Active,
+        } as any, pullRequest.repository.id, pullRequestId);
+    }
 }
 
 function getPullRequestIdFromBranchName(branchName: string): number | undefined {
     const match = branchName.match(/refs\/pull\/(\d+)\/merge/);
     return match && parseInt(match[1]) || undefined;
 }
-
-function createStatReportMarkdown(stat: CodeCoverageComparison) {
-    const sourcePercentage = Number((Math.round(stat.source.covered / stat.source.total * 1000) / 10).toFixed(1));
-    const targetPercentage = Number((Math.round(stat.target.covered / stat.target.total * 1000) / 10).toFixed(1));
-    const diffPercentage = Number(Math.abs(sourcePercentage - targetPercentage).toFixed(1));
-
-    const sourceUncovered = stat.source.total - stat.source.covered;
-    const targetUncovered = stat.target.total - stat.target.covered;
-    const diffUncovered = sourceUncovered - targetUncovered;
-
-    return sourcePercentage === targetPercentage
-        ? `coverage has not changed`
-        : `coverage ${sourcePercentage > targetPercentage ? 'in' : 'de'}creased by ${diffPercentage}%`;
-}
-
-/*
-
-Sample format
-
-|  | master | % | PR | % |
-|---------:|-:|-----------:|-----------:|--:|
-| **Lines** |
-| covered | 800 |  84.7% | (+29 :arrow_up_small:) 829 | (+.5%) 85.2% |
-| uncovered | 144 |  15.3% | 144 | (-.5%) 14.8% |
-| total | 944 | | (+29) 973 |
-| **Branches** |
-| covered | 800 |  84.7% | (+29) 829 | 85.2% :arrow_up_small: .5%|
-| uncovered | 144 |  15.3% | 144 | -.5% :arrow_down_small: 14.8% |
-| total | 944 | | (+29) 973 |
-
-
- */
