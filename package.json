@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Igor Oleinikov",
   "license": "MIT",
+  "scripts": {
+    "test:watch": "jest --watch --config jest.json"
+  },
   "devDependencies": {
     "@types/jest": "^20.0.2",
     "@types/node": "^8.0.2",
