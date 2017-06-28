@@ -6,7 +6,10 @@
   "author": "Igor Oleinikov",
   "license": "MIT",
   "scripts": {
-    "test:watch": "jest --watch --config jest.json"
+    "test:watch": "jest --watch --config jest.json",
+    "build": "tsc && copy.cmd && pack.cmd",
+    "build:copy": "copy.cmd",
+    "build:pack": "pack"
   },
   "devDependencies": {
     "@types/jest": "^20.0.2",
