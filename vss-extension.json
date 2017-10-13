@@ -1,0 +1,33 @@
+{
+    "manifestVersion": 1,
+    "id": "pull-request-tools",
+    "name": "Pull Request Quality Check Tools",
+    "version": "0.1.8",
+    "publisher": "igorbek",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Tools for checking pull requests' quality. Includes report of code coverage changes.",
+    "categories": [
+        "Build and release"
+    ],
+    "files": [
+        {
+            "path": "report-code-coverage"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "report-code-coverage",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "report-code-coverage"
+            }
+        }
+    ]
+}

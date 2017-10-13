@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`formatMarkdownReport renders markdown message 1`] = `
+Object {
+  "inputSource": Object {
+    "label": "PR",
+    "stat": Object {
+      "buildFlavor": "a",
+      "buildPlatform": "b",
+      "coverageStats": Array [
+        Object {
+          "covered": 334,
+          "delta": 0,
+          "isDeltaAvailable": false,
+          "label": "Branches",
+          "position": 0,
+          "total": 455,
+        },
+        Object {
+          "covered": 120,
+          "delta": 0,
+          "isDeltaAvailable": false,
+          "label": "Lines",
+          "position": 1,
+          "total": 235,
+        },
+      ],
+    },
+  },
+  "inputTarget": Object {
+    "label": "master",
+    "stat": Object {
+      "buildFlavor": "a",
+      "buildPlatform": "b",
+      "coverageStats": Array [
+        Object {
+          "covered": 123,
+          "delta": 0,
+          "isDeltaAvailable": false,
+          "label": "Lines",
+          "position": 0,
+          "total": 234,
+        },
+        Object {
+          "covered": 234,
+          "delta": 0,
+          "isDeltaAvailable": false,
+          "label": "Branches",
+          "position": 1,
+          "total": 345,
+        },
+      ],
+    },
+  },
+  "result": "| | master | % | PR | % |
+|-:|-:|-:|-:|-:|
+| **Lines** |
+| covered | 123 | 52.6% | (-3 :arrow_down_small:) 120 :warning: | (-1.5% :arrow_down_small:) 51.1% :warning:
+| uncovered | 111 | 47.4% | (+4 :arrow_up_small:) 115 :warning: | (+1.5% :arrow_up_small:) 48.9% :warning:
+| ***total*** | ***234*** | | (+***1*** :arrow_up_small:) ***235*** |
+| **Branches** |
+| covered | 234 | 67.8% | (+100 :arrow_up_small:) 334 :white_check_mark: | (+5.6% :arrow_up_small:) 73.4% :white_check_mark:
+| uncovered | 111 | 32.2% | (+10 :arrow_up_small:) 121 :warning: | (-5.6% :arrow_down_small:) 26.6% :white_check_mark:
+| ***total*** | ***345*** | | (+***110*** :arrow_up_small:) ***455*** |",
+}
+`;
