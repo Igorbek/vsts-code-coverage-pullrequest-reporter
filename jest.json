@@ -2,7 +2,9 @@
     "automock": false,
     "globals": {
         "window": {},
-        "__TS_CONFIG__": "./tsconfig.json"
+        "ts-jest": {
+            "tsConfigFile": "./tsconfig.json"
+        }
     },
     "mapCoverage": true,
     "moduleFileExtensions": [
