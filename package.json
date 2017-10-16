@@ -8,6 +8,8 @@
   "scripts": {
     "test:watch": "jest --watch --config jest.json",
     "build": "tsc && copy.cmd && pack.cmd",
+    "build:dev": "webpack --config ./webpack.config.js --env=dev",
+    "build:prod": "webpack --config ./webpack.config.js --env=prod",
     "build:copy": "copy.cmd",
     "build:pack": "pack"
   },
@@ -15,6 +17,7 @@
     "@types/jest": "^21.1.2",
     "@types/node": "^8.0.34",
     "@types/q": "^1.0.5",
+    "awesome-typescript-loader": "^3.2.3",
     "jest": "^21.2.1",
     "ts-jest": "^21.1.2",
     "typescript": "2.5.3",
