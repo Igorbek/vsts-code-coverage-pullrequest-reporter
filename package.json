@@ -14,14 +14,16 @@
     "build:pack": "pack"
   },
   "devDependencies": {
-    "@types/jest": "^21.1.2",
-    "@types/node": "^8.0.34",
-    "@types/q": "^1.0.5",
-    "awesome-typescript-loader": "^3.2.3",
+    "@types/jest": "^21.1.5",
+    "@types/node": "^8.0.51",
+    "@types/q": "^1.0.6",
+    "awesome-typescript-loader": "^3.3.0",
     "jest": "^21.2.1",
-    "ts-jest": "^21.1.2",
+    "npm-run-all": "^4.1.2",
+    "ts-jest": "^21.2.1",
     "typescript": "2.5.3",
-    "webpack": "^3.7.1"
+    "webpack": "^3.8.1",
+    "webpack-externals-plugin": "^1.0.0"
   },
   "dependencies": {
     "vso-node-api": "^6.2.8-preview",

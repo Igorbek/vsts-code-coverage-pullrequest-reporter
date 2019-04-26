@@ -1,0 +1,46 @@
+{
+    "id": "0008B455-1804-4D27-AE18-F6D4BCCDD91C",
+    "name": "PostPullRequestComment",
+    "friendlyName": "Post Pull Request Comment",
+    "description": "The task posts a comment to the originating pull request.",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Igor Oleinikov",
+    "preview": true,
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 14
+    },
+    "instanceNameFormat": "Post a comment to originating pull request",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": false
+        }
+    ],
+    "inputs": [
+        {
+            "name": "text",
+            "type": "string",
+            "label": "Text to publish",
+            "required": true,
+            "helpMarkDown": "The text to post.",
+            "defaultValue": ""
+        },
+        {
+            "name": "pullRequestId",
+            "type": "string",
+            "label": "Pull Request Id to publish to",
+            "required": true,
+            "helpMarkDown": "Please specify Id of a PR to publish the comment to. If you want to publish to PR that initiated the build, use `$(System.PullRequest.PullRequestId)`",
+            "defaultValue": "$(System.PullRequest.PullRequestId)"
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getPullRequestIdFromBranchName extracts PR numbers 1`] = `
+Array [
+  Object {
+    "input": "/refs/pull/123/merge",
+    "output": 123,
+  },
+  Object {
+    "input": "/refs/pull/0345/merge",
+    "output": 345,
+  },
+  Object {
+    "input": "/refs/pull/abc/merge",
+    "output": undefined,
+  },
+  Object {
+    "input": "/refs/pull/merge",
+    "output": undefined,
+  },
+  Object {
+    "input": "/refs/pull/123",
+    "output": undefined,
+  },
+  Object {
+    "input": "master",
+    "output": undefined,
+  },
+]
+`;

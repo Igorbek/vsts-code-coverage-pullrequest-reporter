@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "pull-request-tools",
     "name": "Pull Request Quality Check Tools",
-    "version": "0.1.8",
+    "version": "0.1.15",
     "publisher": "igorbek",
     "targets": [
         {
@@ -14,9 +14,8 @@
         "Build and release"
     ],
     "files": [
-        {
-            "path": "report-code-coverage"
-        }
+        { "path": "report-code-coverage" },
+        { "path": "post-pr-comment" }
     ],
     "contributions": [
         {
@@ -27,6 +26,16 @@
             ],
             "properties": {
                 "name": "report-code-coverage"
+            }
+        },
+        {
+            "id": "post-pr-comment",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "post-pr-comment"
             }
         }
     ]

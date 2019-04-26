@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
 var CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+var ExternalsPlugin = require('webpack-externals-plugin');
 
 function configure(env) {
   const isDevelopmentLocal = env === 'devlocal';
@@ -48,6 +49,10 @@ function configure(env) {
     },
 
     plugins: [
+      new ExternalsPlugin({
+        type: 'commonjs',
+        include: __dirname + '/node_modules',
+      }),
       ...isDevelopment ? [
         new CheckerPlugin()
       ] : [],
@@ -91,6 +96,7 @@ const createIfDoesntExist = dest => {
   }
 }
 
+createIfDoesntExist('./dist');
 copySync('./vss-extension.json', './dist/vss-extension.json');
 createIfDoesntExist('./dist/report-code-coverage');
 copySync('./report-code-coverage/task.json', './dist/report-code-coverage/task.json');
