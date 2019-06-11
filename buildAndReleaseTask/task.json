@@ -1,0 +1,41 @@
+{
+    "id": "4cd4f9c5-b455-4022-8744-f784f6b2f833",
+    "name": "ReportPullRequestCodeCoverage",
+    "friendlyName": "Report Pull Request Code Coverage",
+    "description": "The task reports to the originating pull request information of code coverage changes.",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Behrooz Dalvandi",
+    "preview": true,
+    "version": {
+        "Major": 0,
+        "Minor": 3,
+        "Patch": 8
+    },
+    "instanceNameFormat": "Report code coverage to originating pull request",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": false
+        }
+    ],
+    "inputs": [
+        {
+            "name": "buildId",
+            "type": "pickList",
+            "label": "Build",
+            "required": false,
+            "helpMarkDown": "The build from which get code coverage data.",
+            "defaultValue": "$(Build.BuildId)",
+            "options": {
+                "$(Build.BuildId)": "The current build"
+            }
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}
