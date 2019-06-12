@@ -57,10 +57,16 @@ function reportCodeCoverage(vssConnection, buildId, projectId) {
         let pullRequestThread = pullRequestThreads.find(prThread => prThread.properties && prThread.properties.codeCoverageReport);
         if (pullRequestThread && pullRequestThread.comments.length) {
             const comment = pullRequestThread.comments[0];
+            console.log("pullRequestId:", pullRequestId);
+            console.log("lastMergeTargetCommitId:", lastMergeTargetCommitId);
+            console.log("repositoryId: ", pullRequest.repository.id);
+            console.log("thread: ", pullRequestThread.id);
+            console.log("comment: ", comment.id);
             yield codeApi.updateComment({
                 commentType: GitInterfaces_1.CommentType.Text,
                 content: message
             }, pullRequest.repository.id, pullRequestId, pullRequestThread.id, comment.id);
+            yield codeApi.updateThread({ status: 1 }, pullRequest.repository.id, pullRequestId, pullRequestThread.id, projectId);
         }
         else {
             yield codeApi.createThread({

@@ -31,10 +31,9 @@ function main() {
         const vssConnection = new WebApi_1.WebApi(collectionUrl, credentialHandler);
         // get project id
         const projectId = azure_pipelines_task_lib_1.getVariable("System.TeamProjectId");
-        // todo: remove
-        console.log("Salam!", accessToken, collectionUrl, projectId);
-        //await reportCodeCoverage(vssConnection, buildId, projectId);
         yield reportCodeCoverage_1.default(vssConnection, buildId, projectId);
+        console.log("projectId: ", projectId);
+        console.log("buildId: ", buildId);
     });
 }
 main();

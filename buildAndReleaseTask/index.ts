@@ -28,12 +28,10 @@ async function main() {
 
     // get project id
     const projectId = getVariable("System.TeamProjectId");
-
-    // todo: remove
-    console.log("Salam!", accessToken, collectionUrl, projectId);
-    //await reportCodeCoverage(vssConnection, buildId, projectId);
-
     await reportCodeCoverage(vssConnection, buildId, projectId);
+
+    console.log("projectId: ", projectId);
+    console.log("buildId: ", buildId);
 }
 
 main();

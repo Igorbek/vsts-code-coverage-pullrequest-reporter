@@ -9,8 +9,8 @@
     "preview": true,
     "version": {
         "Major": 0,
-        "Minor": 3,
-        "Patch": 8
+        "Minor": 4,
+        "Patch": 5
     },
     "instanceNameFormat": "Report code coverage to originating pull request",
     "groups": [

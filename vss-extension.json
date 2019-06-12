@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "pull-request-tools",
     "name": "Pull Request Quality Check Tools",
-    "version": "0.3.8",
+    "version": "0.4.5",
     "publisher": "PNIMedia",
     "targets": [
         {

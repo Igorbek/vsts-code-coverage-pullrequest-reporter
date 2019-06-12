@@ -1,6 +1,6 @@
 import { WebApi } from "azure-devops-node-api/WebApi";
 import { BuildReason } from "azure-devops-node-api/interfaces/BuildInterfaces";
-import { CommentThreadStatus, CommentType, Comment, GitPullRequestCommentThread } from "azure-devops-node-api/interfaces/GitInterfaces";
+import { CommentThreadStatus, CommentType, Comment, GitPullRequestCommentThread, CommentThread } from "azure-devops-node-api/interfaces/GitInterfaces";
 //import { CodeCoverageStatistics } from "vso-node-api/interfaces/TestInterfaces";
 import { formatMarkdownReport } from './messageFormatter';
 
@@ -101,6 +101,13 @@ export default async function reportCodeCoverage(
     let pullRequestThread = pullRequestThreads.find(prThread => prThread.properties && prThread.properties.codeCoverageReport);
     if (pullRequestThread && pullRequestThread.comments.length) {
         const comment = pullRequestThread.comments[0];
+
+        console.log("pullRequestId:", pullRequestId);
+        console.log("lastMergeTargetCommitId:", lastMergeTargetCommitId);
+        console.log("repositoryId: ", pullRequest.repository.id);
+        console.log("thread: ", pullRequestThread.id);
+        console.log("comment: ", comment.id);
+
         await codeApi.updateComment({
                 commentType: CommentType.Text,
                 content: message
@@ -109,6 +116,9 @@ export default async function reportCodeCoverage(
             pullRequestId,
             pullRequestThread.id,
             comment.id);
+
+        await codeApi.updateThread({status: 1}, pullRequest.repository.id, pullRequestId, pullRequestThread.id, projectId);
+
     } else {
         await codeApi.createThread({
                 comments: [{
