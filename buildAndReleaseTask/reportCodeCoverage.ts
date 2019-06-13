@@ -108,6 +108,10 @@ export default async function reportCodeCoverage(
         console.log("thread: ", pullRequestThread.id);
         console.log("comment: ", comment.id);
 
+        let resetVote = false;
+        if (comment.content !== message)
+            resetVote = true;
+
         await codeApi.updateComment({
                 commentType: CommentType.Text,
                 content: message
@@ -117,7 +121,8 @@ export default async function reportCodeCoverage(
             pullRequestThread.id,
             comment.id);
 
-        await codeApi.updateThread({status: 1}, pullRequest.repository.id, pullRequestId, pullRequestThread.id, projectId);
+        if (resetVote)
+            await codeApi.updateThread({status: 1}, pullRequest.repository.id, pullRequestId, pullRequestThread.id, projectId);
 
     } else {
         await codeApi.createThread({
